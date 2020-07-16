@@ -11,6 +11,7 @@ During this assignment, we will be focusing mainly on **RESTful APIs** that uses
 - [Migrations](#migrations)
 - [API Controllers](#api-controllers)
 - [Swagger](#swagger)
+- [Updating Our Model](#updating-our-model)
 <hr>
 
 ### Model
@@ -176,3 +177,33 @@ It is important to test if everything is working now, so change the field values
 ![](./images/3.PNG?)
 
 If we are returned with `201` and `200` HTTP response codes, everything is running fine with your API and server.
+
+### Updating Our Model
+If our model ever needs to change, we can update the existing model which we created earlier.
+
+```cpp
+public class Student 
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int studentID {get; set;}
+    [Required, MaxLength(100)]
+    public string firstName {get; set;}
+    public string middleName {get; set;}
+    [Required]
+    public string lastName {get; set;}
+    public string emailAddress {get; set;}
+    public int phoneNumber {get; set;}
+    [TimeStamp]
+    public DateTime timecreated {get; set;}
+}
+```
+
+After doing so, we must run the following commands in the package manager to consider those updates made.
+
+```
+Add-Migration UpdatedStudentModel
+Update-Database
+```
+
+To revert changes, simply call `Update-Database` along with the name of the previous migration.
