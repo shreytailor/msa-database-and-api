@@ -12,6 +12,7 @@ During this assignment, we will be focusing mainly on **RESTful APIs** that uses
 - [API Controllers](#api-controllers)
 - [Swagger](#swagger)
 - [Updating Our Model](#updating-our-model)
+- [Deploy .NET Core Web API To Azure](#deploy-net-core-web-api-to-azure)
 <hr>
 
 ### Model
@@ -207,3 +208,33 @@ Update-Database
 ```
 
 To revert changes, simply call `Update-Database` along with the name of the previous migration.
+
+### Deploy .NET Core Web API To Azure
+We have completed building our API, and now we can move onto the publishing phase. Firstly, we must configure the CORS policy - so that we can host the Swagger application on Azure. Add the following code to the `Startup.cs` file.
+
+```cpp
+public void ConfigureServices(IServiceCollection services)
+{
+    // Setting the CORS policy.
+    services.AddCors();
+}
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    // Setting the CORS policy.
+    app.UseCors(builder => builder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .SetIsOriginAllowed(host => true)
+        .AllowCredentials()
+    );
+}
+```
+
+We have configured everything, and are ready for final deployment now. In Azure, go to the **App Servicies** section and create a new one. For the settings, set everything as below and leave the *App Services Plan* as default.
+
+![](./images/4.PNG?)
+
+After creating the service on Azure, we have to publish our application from Visual Studio, on it. In order to do this, right click on our project and select *Publish*. Select **New > Azure > Azure App Service (Windows)** and then select your application which you just created from the Azure Portal.
+
+Correctly carrying out the steps above will ensure that your API is now published on the internet.
